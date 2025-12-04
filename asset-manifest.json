@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Graphics-App/static/css/main.31d6cfe0.css",
+    "main.js": "/Graphics-App/static/js/main.08af6b93.js",
+    "static/media/logo-app.png": "/Graphics-App/static/media/logo-app.479d7a8b4dc069959b65.png",
+    "index.html": "/Graphics-App/index.html",
+    "main.08af6b93.js.map": "/Graphics-App/static/js/main.08af6b93.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31d6cfe0.css",
+    "static/js/main.08af6b93.js"
+  ]
+}
