@@ -8,21 +8,9 @@ export default function Articles() {
   useEffect(() => {
     document.title = 'My Test - Articles';
 
-    // Get today's date and 7 days ago for a valid date range
-    const today = new Date();
-    const weekAgo = new Date();
-    weekAgo.setDate(today.getDate() - 7);
-    
-    const toDate = today.toISOString().split('T')[0];
-    const fromDate = weekAgo.toISOString().split('T')[0];
-
-    // Llamada directa a NewsAPI (sin servidor intermedio)
-    // OJO: la API key queda pública en el frontend si la pones aquí.
-    const apiKey = 'dcd28e9ccba4430996d1818e88df2c4a'; // pon aquí tu API key o cámbiala por otra
-    const q = 'apple';
-    const sortBy = 'popularity';
-
-    const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(q)}&from=${fromDate}&to=${toDate}&sortBy=${sortBy}&apiKey=${apiKey}`;
+    // Ejemplo con una API pública que sí se puede llamar directamente desde el navegador
+    // Usamos Spaceflight News API (no requiere API key)
+    const url = 'https://api.spaceflightnewsapi.net/v4/articles/?limit=30';
 
     fetch(url)
       .then(response => {
@@ -32,7 +20,15 @@ export default function Articles() {
         return response.json();
       })
       .then(json => {
-        setData(json);
+        // Adaptamos la respuesta al formato que ya usa el componente (articles[])
+        const articles = (json.results || []).map((a: any) => ({
+          url: a.url,
+          urlToImage: a.image_url,
+          title: a.title,
+          description: a.summary,
+        }));
+
+        setData({ articles });
         setIsLoading(false);
         console.log(json);
       })
