@@ -2,11 +2,14 @@
   "name": "react.dev",
   "version": "0.0.0",
   "main": "/src/index.js",
+  "homepage": "https://andri-jose.github.io/Graphics-App",
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",
     "server": "node server.js",
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "build": "env-cmd -f .env react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "test-jest": "jest",
     "test-playwright": "npx playwright test",
@@ -55,7 +58,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-transform-stub": "^2.0.0",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "gh-pages": "^6.2.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",
