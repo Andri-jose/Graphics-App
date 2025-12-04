@@ -21,7 +21,7 @@ const theme = createTheme({
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter basename="/Graphics-App">
         <Routes>
             <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />

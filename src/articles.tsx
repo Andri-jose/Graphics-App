@@ -57,7 +57,7 @@ export default function Articles() {
             {data.error}
           </p>
           <p className="text-center text-gray-500 text-sm">
-            Make sure the backend server is running on port 3001
+            Please check your internet connection and try again.
           </p>
         </div>
       );
