@@ -16,13 +16,15 @@ export default function Articles() {
     const toDate = today.toISOString().split('T')[0];
     const fromDate = weekAgo.toISOString().split('T')[0];
 
-    // Use the backend API endpoint
-    // In development, use full URL; in production, proxy will handle it
-    const apiUrl = process.env.NODE_ENV === 'production' 
-      ? '/api/news' 
-      : 'http://localhost:3001/api/news';
-    
-    fetch(`${apiUrl}?q=apple&from=${fromDate}&to=${toDate}&sortBy=popularity`)
+    // Llamada directa a NewsAPI (sin servidor intermedio)
+    // OJO: la API key queda pública en el frontend si la pones aquí.
+    const apiKey = 'dcd28e9ccba4430996d1818e88df2c4a'; // pon aquí tu API key o cámbiala por otra
+    const q = 'apple';
+    const sortBy = 'popularity';
+
+    const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(q)}&from=${fromDate}&to=${toDate}&sortBy=${sortBy}&apiKey=${apiKey}`;
+
+    fetch(url)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,12 +39,9 @@ export default function Articles() {
       .catch(error => {
         console.error('Error fetching articles:', error);
         setIsLoading(false);
-        // Set error state to show helpful message
         setData({ 
           articles: [], 
-          error: error.message.includes('Failed to fetch') 
-            ? 'Backend server is not running. Please start it with: npm run server'
-            : 'Failed to load articles. Please try again later.'
+          error: 'Failed to load articles. Please try again later.'
         });
       });
   }, []); 
