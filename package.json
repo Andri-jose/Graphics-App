@@ -2,7 +2,7 @@
   "name": "react.dev",
   "version": "0.0.0",
   "main": "/src/index.js",
-  "homepage": "https://andri-jose.github.io/Graphics-App",
+  "homepage": "https://andri-jose.github.io/Graphics-App/",
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",
     "server": "node server.js",
