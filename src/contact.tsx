@@ -1,38 +1,60 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
+
+type FormData = {
+  firstName: string
+  lastName: string
+  email: string
+  message: string
+}
+
+
+type FormErrors = {
+  firstName?: boolean
+  lastName?: boolean
+  email?: boolean
+  message?: boolean
+}
+
+
 export default function Contact() {
-  const [agreed, setAgreed] = useState(false);
+  const [agreed, setAgreed] = useState<boolean>(false);
 
-  useEffect(() => {
-    document.title = 'My Test - Contact';
-  }, []);
+  const [form, setForm] = useState<FormData>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  })
 
-  // fake BackEnd to store form data
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+
+  // useEffect(() => {
+  //   document.title = 'My Test - Contact';
+  // }, []);
+
+  const [errors, setErrors] = useState<FormErrors>({})
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const newErrors: FormErrors = {}
 
-    if (!agreed) {
-      // If the user has not agreed to the privacy policy, show an alert
-      alert("Please agree to the privacy policy before submitting.");
-      return;
+    if (form.firstName.trim().length < 2) {
+      newErrors.firstName = true
     }
-    
-    // Save form data to localStorage
-    const data = {
-      firstName: formData.get("first-name"),
-      lastName: formData.get("last-name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
-    };
-    localStorage.setItem("formData", JSON.stringify(data));
-    alert("Data saved in localStorage");
-    
-    // Reset the form after saving
-    event.currentTarget.reset();
-    // Reset the agreed checkbox state
-    setAgreed(false);
+
+    if (form.lastName.trim().length < 2) {
+      newErrors.lastName = true
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = true
+      alert('Please enter a valid email address');
+    }
+
+    setErrors(newErrors);
+
+     
   }
 
   return (
@@ -41,33 +63,51 @@ export default function Contact() {
         <h2 className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">Contact Us!</h2>
         <p className="mt-2 text-lg/8 text-gray-600">Have a question or need assistance? We’re here to help!</p>
       </div>
+
       <form action="#" method="POST" onSubmit={handleSubmit} className="mx-auto max-w-xl sm:mt-10">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">First name</label>
             <div className="mt-2.5">
-              <input type="text" name="first-name" id="first-name" required autoComplete="given-name" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600" />
+              <input type="text" name="first-name" id="first-name"  autoComplete="given-name" 
+              value={form.firstName} onChange={(e) => setForm((prev) => ({ ...prev, firstName: e.target.value }))}
+               className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 
+                -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 
+                focus:-outline-offset-2 focus:outline-sky-600 ${errors.firstName ? 'outline-red-500' : ''}`} 
+              />
             </div>
           </div>
 
           <div>
             <label htmlFor="last-name" className="block text-sm/6 font-semibold text-gray-900">Last name</label>
             <div className="mt-2.5">
-              <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600" />
+              <input type="text" name="last-name" id="last-name" autoComplete="family-name" 
+              value={form.lastName} onChange={(e) => setForm((prev) => ({ ...prev, lastName: e.target.value }))}
+              className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 
+                -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 
+                focus:-outline-offset-2 focus:outline-sky-600 ${errors.lastName ? 'outline-red-500' : ''}`} />
             </div>
           </div>
 
           <div className="sm:col-span-2">
             <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">Email</label>
             <div className="mt-2.5">
-              <input type="email" name="email" id="email" required autoComplete="email" className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600" />
+              <input type="email" name="email" id="email"  autoComplete="email" 
+              value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+              className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 
+                -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 
+                focus:-outline-offset-2 focus:outline-sky-600 ${errors.email ? 'outline-red-500' : ''}`} />
             </div>
           </div>
 
           <div className="sm:col-span-2">
             <label htmlFor="message" className="block text-sm/6 font-semibold text-gray-900">Message</label>
             <div className="mt-2.5">
-              <textarea name="message" id="message" rows={4} className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600"></textarea>
+              <textarea name="message" id="message" rows={4} value={form.message} onChange={(e) => 
+                setForm((prev) => ({ ...prev, message: e.target.value }))} className="block w-full rounded-md 
+                bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 
+                placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600">
+              </textarea>
             </div>
           </div>
 
