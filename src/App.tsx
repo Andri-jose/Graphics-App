@@ -6,6 +6,7 @@ import Dashboard from './dashboard';
 import Articles from './articles';
 import Contact from './contact';
 import ErrorPage from './error-page';
+import About from './about';
 
 const theme = createTheme({
   palette: {
@@ -27,7 +28,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="articles" element={<Articles />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="about" element={<ErrorPage />} />
+            <Route path="about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>
