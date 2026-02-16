@@ -19,43 +19,52 @@ type FormErrors = {
 
 
 export default function Contact() {
-  const [agreed, setAgreed] = useState<boolean>(false);
-
   const [form, setForm] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     message: '',
   })
-
-
-  // useEffect(() => {
-  //   document.title = 'My Test - Contact';
-  // }, []);
-
-  const [errors, setErrors] = useState<FormErrors>({})
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [agreed, setAgreed] = useState<boolean>(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newErrors: FormErrors = {}
-
     if (form.firstName.trim().length < 2) {
       newErrors.firstName = true
     }
-
     if (form.lastName.trim().length < 2) {
       newErrors.lastName = true
     }
-
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = true
       alert('Please enter a valid email address');
     }
-
     setErrors(newErrors);
 
+    if (Object.keys(newErrors).length > 0) {
+    return;
+    }
+
+    if (!agreed) {
+    alert('Please agree to the privacy policy before submitting the form');
+    }
+
+     // RESET formulary
+     if (Object.keys(newErrors).length === 0 && agreed) {
+      setForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        message: '',
+      });
+    }
+    setAgreed(false);
      
   }
+
+
 
   return (
     <div style={containerStyle}>
